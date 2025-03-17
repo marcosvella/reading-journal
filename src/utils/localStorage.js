@@ -25,7 +25,7 @@ export const addBook = (book) => {
 
   validateBookProps(book)
 
-  const bookAlreadyExists = books.find(b => b.title.toLowerCase() == book.title.toLowerCase())
+  const bookAlreadyExists = books.find(b => b.title.toLowerCase() === book.title.toLowerCase())
   if (bookAlreadyExists) {
     throw new Error('Livro já cadastrado. Não é permitido cadastrar o mesmo livro duas vezes')
   }
