@@ -52,3 +52,19 @@ export const removeBook = (title) => {
   localStorage.setItem(`${localStoragePrefix}`, JSON.stringify(books))
   return books
 }
+
+export const getBook = (id) => {
+  const books = JSON.parse(localStorage.getItem('books')) || []
+  return books.find(book => book.id === id)
+}
+
+export const updateBook = (id, updatedBook) => {
+  const books = JSON.parse(localStorage.getItem('books')) || []
+  const index = books.findIndex(book => book.id === id)
+  if (index !== -1) {
+    books[index] = { ...books[index], ...updatedBook }
+    localStorage.setItem('books', JSON.stringify(books))
+  } else {
+    throw new Error('Livro não encontrado')
+  }
+}

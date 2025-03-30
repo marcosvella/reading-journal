@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom"
-import styles from './index.module.css'
+import { Card, CardContent, CardMedia, CardActions, Typography, Button, Box, Grid, IconButton } from '@mui/material'
+import EditIcon from '@mui/icons-material/Edit'
 
 import { } from '../../utils/localStorage'
 
@@ -13,56 +14,71 @@ export const BookList = (props) => {
     return `${dia}/${mes}/${ano}`;
   }
 
-
   return (
-    <div className={styles.container}>
+    <Box sx={{ width: '90%', paddingBottom: '2rem', margin: '0 auto' }}>
       {
         (books.length === 0 || !books) && (
-          <div className={styles.noBook}>
-            <h3>Nenhum livro cadastrado. Comece a cadastrar agora mesmo!</h3>
-            <button>
-              <Link to="/cadastrar">
-                Cadastrar
-              </Link>
-            </button>
-          </div>
+          <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column', justifyContent: 'center' }}>
+            <Typography variant="h6">Nenhum livro cadastrado. Comece a cadastrar agora mesmo!</Typography>
+            <Button variant="contained" color="primary" component={Link} to="/cadastrar">
+              Cadastrar
+            </Button>
+          </Box>
         )
       }
-      <div className={styles.booksContainer}>
+      <Grid container spacing={4}>
         {books.map(book => (
-          <div className={styles.book}>
-            <img src={book.imageUrl ? book.imageUrl : imgPlaceholder} alt="Capa do livro" width={100} />
-            <div className={styles.bookContentContainer}>
-              <div className={styles.bookContent}>
-                <div className={styles.bookContentText}>
-                  <h4>Título:</h4>
-                  <p>{book.title}</p>
-                </div >
-                <div className={styles.bookContentText}>
-                  <h4>Autor:</h4>
-                  <p>{book.author}</p>
-                </div>
-              </div>
-              <div className={styles.bookContent}>
-                <div className={styles.bookContentText}>
-                  <h4>Gênero:</h4>
-                  <p>{book.genre}</p>
-                </div>
-                <div className={styles.bookContenText}>
-                  <h4>Data de leitura:</h4>
-                  <p>{formatDate(book.date)}</p>
-                </div>
-              </div>
-              <div className={styles.bookButton}>
-                <h4>Ações</h4>
-                <button onClick={() => props.removeBook(book.title)}>
+          <Grid item xs={12} sm={6} md={4} key={book.title}>
+            <Card sx={{ height: '100%', position: 'relative' }}>
+              <CardMedia
+                component="img"
+                height="200"
+                image={book.imageUrl ? book.imageUrl : imgPlaceholder}
+                alt="Capa do livro"
+                sx={{ objectFit: 'cover' }}
+              />
+              <IconButton 
+                component={Link} 
+                to={`/editar/${book.id}`} 
+                sx={{ 
+                  position: 'absolute', 
+                  top: 8, 
+                  right: 8, 
+                  backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                  '&:hover': {
+                    backgroundColor: 'rgba(255, 255, 255, 1)',
+                  },
+                  borderRadius: '50%'
+                }}
+              >
+                <EditIcon />
+              </IconButton>
+              <CardContent>
+                <Typography variant="h6">{book.title}</Typography>
+                <Typography variant="subtitle1" color="textSecondary">{book.author}</Typography>
+                <Typography variant="body2" color="textSecondary">{book.genre}</Typography>
+                <Typography variant="body2" color="textSecondary">{formatDate(book.date)}</Typography>
+              </CardContent>
+              <CardActions>
+                <Button 
+                  size="small" 
+                  sx={{ 
+                    color: 'primary.main', 
+                    backgroundColor: 'transparent', 
+                    '&:hover': { 
+                      backgroundColor: 'transparent',
+                      textDecoration: 'underline',
+                    } 
+                  }} 
+                  onClick={() => props.removeBook(book.title)}
+                >
                   Remover
-                </button>
-              </div>
-            </div>
-          </div>
+                </Button>
+              </CardActions>
+            </Card>
+          </Grid>
         ))}
-      </div>
-    </div>
+      </Grid>
+    </Box>
   )
 }

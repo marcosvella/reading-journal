@@ -1,24 +1,20 @@
 import { Link } from 'react-router-dom'
-
-import styles from './index.module.css'
+import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material'
 
 export const NavBar = () => {
   return (
-    <nav className={styles.navContainer}>
-      <div className={styles.navItemsContainer}>
-        <div className={styles.navItem}>
-          <Link to={'/'} > Home </Link>
-        </div>
-        <div className={styles.navItem}>
-          <Link to={'/sobre'}> Sobre </Link>
-        </div>
-        <div className={styles.navItem}>
-          <Link to={'/lista-de-livros'}> Lista de livros </Link>
-        </div>
-        <div className={styles.navItem}>
-          <Link to={'/cadastrar'}> Cadastrar </Link>
-        </div>
-      </div>
-    </nav>
+    <AppBar position="fixed">
+      <Toolbar>
+        <Typography variant="h6" component={Link} to={'/'} style={{ textDecoration: 'none', color: 'inherit', flexGrow: 1 }}>
+          Reading Journal
+        </Typography>
+        <Box sx={{ display: 'flex', gap: 2 }}>
+          <Button color="inherit" component={Link} to={'/'}>Home</Button>
+          <Button color="inherit" component={Link} to={'/sobre'}>Sobre</Button>
+          <Button color="inherit" component={Link} to={'/lista-de-livros'}>Lista de livros</Button>
+          <Button color="inherit" component={Link} to={'/cadastrar'}>Cadastrar</Button>
+        </Box>
+      </Toolbar>
+    </AppBar>
   )
 }
