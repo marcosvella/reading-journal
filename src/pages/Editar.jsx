@@ -24,7 +24,7 @@ export const Editar = () => {
           backgroundImage: `url(${BackgroundImage})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          paddingTop: '64px', // Altura do NavBar
+          paddingTop: '64px',
           minHeight: '100vh',
           display: 'flex',
           alignItems: 'center',

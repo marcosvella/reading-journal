@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { TextField, Button, Box, CardMedia } from '@mui/material'
+import { TextField, Button, Box } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
-import { getBook, updateBook } from '../utils/localStorage'
+import { getBookById, updateBook } from '../services/api'
 
 export const EditBookForm = ({ id }) => {
   const navigate = useNavigate()
@@ -9,15 +9,19 @@ export const EditBookForm = ({ id }) => {
     title: "",
     author: "",
     genre: "",
-    date: "",
-    imageUrl: ""
+    date: ""
   })
 
   useEffect(() => {
-    const book = getBook(id)
-    if (book) {
-      setBook(book)
+    const fetchBook = async () => {
+      try {
+        const bookData = await getBookById(id)
+        setBook(bookData)
+      } catch (error) {
+        window.alert('Erro ao carregar dados do livro: ' + error.message)
+      }
     }
+    fetchBook()
   }, [id])
 
   const handleChange = (e) => {
@@ -28,37 +32,23 @@ export const EditBookForm = ({ id }) => {
     }))
   }
 
-  const handleUpdateBook = (e) => {
+  const handleUpdateBook = async (e) => {
     e.preventDefault()
     try {
-      updateBook(id, book)
+      await updateBook(id, book)
       window.alert('Livro atualizado com sucesso!')
       navigate('/lista-de-livros')
     } catch (error) {
-      window.alert(error.message)
+      window.alert('Erro ao atualizar livro: ' + error.message)
     }
   }
 
   return (
     <Box component="form" onSubmit={handleUpdateBook} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, width: '100%' }}>
-      <Box sx={{ 
-        width: '100%',
-        display: 'flex', 
-        justifyContent: 'center', 
-        marginBottom: '1rem' 
-        }}>
-        <CardMedia
-          component="img"
-          image={book.imageUrl ? book.imageUrl : "https://placehold.co/200.png"}
-          alt="Capa do livro"
-          sx={{ width: 'auto', height: '200px' }}
-        />
-      </Box>
-      <TextField label="Insira o título do livro" name="title" value={book.title} onChange={handleChange} fullWidth />
-      <TextField label="Insira o nome do autor" name="author" value={book.author} onChange={handleChange} fullWidth />
-      <TextField label="Insira o gênero do livro" name="genre" value={book.genre} onChange={handleChange} fullWidth />
-      <TextField label="Insira a data de leitura" type="date" name="date" value={book.date} onChange={handleChange} fullWidth InputLabelProps={{ shrink: true }} />
-      <TextField label="Insira um link para capa do livro (opcional)" type="url" name="imageUrl" value={book.imageUrl} onChange={handleChange} fullWidth />
+      <TextField label="Insira o título do livro" name="title" value={book.title} onChange={handleChange} fullWidth required />
+      <TextField label="Insira o nome do autor" name="author" value={book.author} onChange={handleChange} fullWidth required />
+      <TextField label="Insira o gênero do livro" name="genre" value={book.genre} onChange={handleChange} fullWidth required />
+      <TextField label="Insira a data de leitura" type="date" name="date" value={book.date} onChange={handleChange} fullWidth required InputLabelProps={{ shrink: true }} />
       <Button type="submit" variant="contained" color="primary" fullWidth>
         Atualizar
       </Button>

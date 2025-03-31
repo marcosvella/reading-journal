@@ -21,9 +21,9 @@ export const Cadastro = () => {
           justifyContent: 'center'
         }}
       >
-        <Container >
+        <Container>
           <Card elevation={3} sx={{ backgroundColor: 'rgba(255, 255, 255, 0.9)' }}>
-            <CardContent >
+            <CardContent>
               <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
                 <Typography variant="h4" component="h1" gutterBottom>
                   Cadastro de Livros

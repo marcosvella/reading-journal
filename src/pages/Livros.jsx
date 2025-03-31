@@ -3,7 +3,7 @@ import { Container, Typography, Box, Card, CardContent } from '@mui/material'
 import { BookList } from '../components/BookList'
 import { NavBar } from '../components/NavBar'
 import { getBooks } from '../utils/localStorage'
-
+import { listBooks, removeBook } from '../services/api'
 const BackgroundImage = 'https://unsplash.com/photos/Oaqk7qqNh_c/download?force=true'
 
 
@@ -11,11 +11,29 @@ export const Livros = () => {
   const [books, setBooks] = useState([])
 
   useEffect(() => {
-    const books = getBooks()
-    if (books) {
-      setBooks(books)
+    const fetchBooks = async () => {
+      try {
+        const data = await listBooks();
+        console.log(data);
+        setBooks(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchBooks();
+  }, []);
+
+  const handleRemoveBook = async (id) => {
+    try {
+      await removeBook(id);
+      setBooks(books.filter((book) => book.id !== id));
+      window.alert('Livro removido com sucesso!');
+    } catch (error) {
+      console.error(error);
+      window.alert('Erro ao remover livro: ' + error.message);
     }
-  }, [])
+  };
 
   return (
     <div>
@@ -39,7 +57,7 @@ export const Livros = () => {
                 <Typography variant="h4" component="h1" gutterBottom>
                   Lista de Livros
                 </Typography>
-                <BookList books={books} removeBook={(title) => setBooks(books.filter(book => book.title !== title))} />
+                <BookList books={books} removeBook={handleRemoveBook} />
               </Box>
             </CardContent>
           </Card>
