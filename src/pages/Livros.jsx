@@ -14,7 +14,6 @@ export const Livros = () => {
     const fetchBooks = async () => {
       try {
         const data = await listBooks();
-        console.log(data);
         setBooks(data);
       } catch (error) {
         console.error(error);

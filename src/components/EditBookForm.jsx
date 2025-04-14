@@ -9,14 +9,19 @@ export const EditBookForm = ({ id }) => {
     title: "",
     author: "",
     genre: "",
-    date: ""
+    readAt: ""
   })
 
   useEffect(() => {
     const fetchBook = async () => {
       try {
         const bookData = await getBookById(id)
-        setBook(bookData)
+        setBook({
+          title: bookData.title || "",
+          author: bookData.author || "",
+          genre: bookData.genre || "",
+          readAt: bookData.readAt || ""
+        })
       } catch (error) {
         window.alert('Erro ao carregar dados do livro: ' + error.message)
       }
@@ -48,7 +53,7 @@ export const EditBookForm = ({ id }) => {
       <TextField label="Insira o título do livro" name="title" value={book.title} onChange={handleChange} fullWidth required />
       <TextField label="Insira o nome do autor" name="author" value={book.author} onChange={handleChange} fullWidth required />
       <TextField label="Insira o gênero do livro" name="genre" value={book.genre} onChange={handleChange} fullWidth required />
-      <TextField label="Insira a data de leitura" type="date" name="date" value={book.date} onChange={handleChange} fullWidth required InputLabelProps={{ shrink: true }} />
+      <TextField label="Insira a data de leitura" type="date" name="readAt" value={book.readAt} onChange={handleChange} fullWidth required />
       <Button type="submit" variant="contained" color="primary" fullWidth>
         Atualizar
       </Button>
